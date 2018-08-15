@@ -20,7 +20,7 @@ $main_form.Controls.Add($Label)
 $TextBox.Location  = New-Object System.Drawing.Point(20,30)
 $TextBox.Size = New-Object System.Drawing.Size(220,150)
 $TextBox.MultiLine = $True
-$TextBox.Text = 'Пример: 0001-nb;.'
+$TextBox.Text = 'Пример: host-name.'
 $TextBox.Place
 $main_form.Controls.Add($TextBox)
 
@@ -42,7 +42,7 @@ if ($result -eq [System.Windows.Forms.DialogResult]:: OK){
 
     $openFileDialog.initialDirectory = [System.IO.Directory]::GetCurrentDirectory() 
     $openFileDialog.title = "Выберите архив для копирования(формат PST)"   
-    $openFileDialog.filter = "All files (*.*)| *.*"   
+    $openFileDialog.filter = "All files (*.*)| *.*"
     $openFileDialog.filter = "PublishSettings Files|*.publishsettings|All Files|*.*" 
     $openFileDialog.ShowHelp = $True
      
@@ -58,7 +58,7 @@ $Label = New-Object System.Windows.Forms.Label
 $TextBox = New-Object System.Windows.Forms.TextBox
 $OKButton = New-Object System.Windows.Forms.Button
 
-$archive_name_form.Text = 'Имя архива'
+$archive_name_form.Text = 'Название архива'
 $archive_name_form.Width = 270
 $archive_name_form.Height = 260
 $archive_name_form.AutoSize = $false
@@ -122,17 +122,23 @@ $h_name
 
             if($i.DeviceID[0] -eq 'C'){
 
-            $path_to_dir = '\\' + $h_name + '\'+ $i.DeviceID[0] +'$\Users'+ $user_name +'\Documents\Файлы Outlook\'
+            $path_to_dir = '\\' + $h_name + '\'+ $i.DeviceID[0] +'$\Users'+ $user_name + '\Documents\Файлы Outlook\'
             
-                if(!(Test-Path -Path $path_to_dir)){
-
+                if(!(Test-Path $path_to_dir)){
                     New-Item -ItemType Directory -Force -Path $path_to_dir
                     Copy-item $OpenFileDialog.filename $path_to_dir$archive_name -force
+                    New-Item -Path $path_to_dir'path_pst.txt' -ItemType File
+                    Add-content -Path  $path_to_dir'path_pst.txt' $path_to_dir$archive_name
+                    Copy-item 'C:\archive_to_remote_usr\add_pst.vbs' $path_to_dir'add_pst.vbs' -force
                     Write-Host $user_name
                     break
-
                     }else{
                     Copy-item $OpenFileDialog.filename $path_to_dir$archive_name -force
+                    New-Item -Path $path_to_dir'path_pst.txt' -ItemType File
+                    Add-content -Path  $path_to_dir'path_pst.txt' $path_to_dir$archive_name
+                    if(!(Test-Path -Path $path_to_dir'add_pst.vbs')){
+                            Copy-item 'C:\archive_to_remote_usr\add_pst.vbs' $path_to_dir'add_pst.vbs' -force
+                    }
                     Write-Host $user_name
                     break
 
@@ -148,10 +154,18 @@ $h_name
 
                     New-Item -ItemType Directory -Force -Path $path_to_dir
                     Copy-item $OpenFileDialog.filename $path_to_dir$archive_name -force
+                    New-Item -Path $path_to_dir'path_pst.txt' -ItemType File
+                    Add-content -Path  $path_to_dir'path_pst.txt' $path_to_dir$archive_name
+                    Copy-item 'C:\archive_to_remote_usr\add_pst.vbs' $path_to_dir'add_pst.vbs' -force
                     Write-Host $user_name
                     break
                 }else{
                       Copy-item $OpenFileDialog.filename $path_to_dir$archive_name -force
+                      New-Item -Path $path_to_dir'path_pst.txt' -ItemType File
+                      Add-content -Path  $path_to_dir'path_pst.txt' $path_to_dir$archive_name
+                      if(!(Test-Path -Path $path_to_dir'add_pst.vbs')){
+                          Copy-item 'C:\archive_to_remote_usr\add_pst.vbs' $path_to_dir'add_pst.vbs' -force
+                      }
                       Write-Host $user_name
                 }
                }
@@ -160,7 +174,7 @@ $h_name
         }
     }
 }
-    }else{Write-Host "Корявое имя))!" -ForegroundColor Yellow}
+    }else{Write-Host "Отмена!" -ForegroundColor Yellow}
     }else { Write-Host "Ничего не выбрано!" -ForegroundColor Yellow} 
  }
 
