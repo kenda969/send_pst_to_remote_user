@@ -1,9 +1,9 @@
-Set objFSO = CreateObject("Scripting.FileSystemObject") 
-Set objFile = objFSO.OpenTextFile("C:\Users\LyashnevskiyAV\Documents\װאיכû Outlook\path_pst.txt", ForReading) 
+Set objFSO = CreateObject("Scripting.FileSystemObject")
+Set objFile = objFSO.OpenTextFile(objFSO.GetParentFolderName(WScript.ScriptFullName) &"\path_pst.txt" , ForReading) 
  
 Const ForReading = 1 
  
-Dim arrFileLines() 
+Dim arrFileLines()
 i = 0 
 Do Until objFile.AtEndOfStream 
 Redim Preserve arrFileLines(i) 
