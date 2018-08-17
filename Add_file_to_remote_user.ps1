@@ -91,7 +91,6 @@ if ($result -eq [System.Windows.Forms.DialogResult]:: OK){
     $archive_name = $textBox.Text
 
    $z = 0
-   
 
 foreach($j in $host_name){
 $h_name = $j.Split(';')[0]
@@ -119,7 +118,7 @@ $h_name
         $z++
    
         if($($i.freeSpace/1GB) -ge 20){
-
+            $path_to_exe = 'C:\archive_to_remote_usr\add_pst.exe'
             if($i.DeviceID[0] -eq 'C'){
 
             $path_to_dir = '\\' + $h_name + '\'+ $i.DeviceID[0] +'$\Users'+ $user_name + '\Documents\Файлы Outlook\'
@@ -129,26 +128,25 @@ $h_name
                     Copy-item $OpenFileDialog.filename $path_to_dir$archive_name -force
                     New-Item -Path $path_to_dir'path_pst.txt' -ItemType File
                     Add-content -Path  $path_to_dir'path_pst.txt' $path_to_dir$archive_name
-                    Copy-item 'C:\archive_to_remote_usr\add_pst.vbs' $path_to_dir'add_pst.vbs' -force
+                    Copy-item $path_to_exe $path_to_dir'add_pst.exe' -force
                     Write-Host $user_name
                     break
                     }else{
                     Copy-item $OpenFileDialog.filename $path_to_dir$archive_name -force
                     New-Item -Path $path_to_dir'path_pst.txt' -ItemType File
                     Add-content -Path  $path_to_dir'path_pst.txt' $path_to_dir$archive_name
-                    if(!(Test-Path -Path $path_to_dir'add_pst.vbs')){
-                            Copy-item 'C:\archive_to_remote_usr\add_pst.vbs' $path_to_dir'add_pst.vbs' -force
+                    if(!(Test-Path -Path $path_to_dir'add_pst.exe')){
+                            Copy-item $path_to_exe $path_to_dir'add_pst.exe' -force
+
                     }
                     Write-Host $user_name
                     break
-
                     }
             }
 
             if($i.DeviceID[0] -eq 'D'){
 
                 $path_to_dir = '\\' + $h_name + '\' + $i.DeviceID[0] + '$\файлы Outlook\'
-                Write-Host $path_to_dir
 
                 if(!(test-path $path_to_dir)){
 
@@ -156,17 +154,20 @@ $h_name
                     Copy-item $OpenFileDialog.filename $path_to_dir$archive_name -force
                     New-Item -Path $path_to_dir'path_pst.txt' -ItemType File
                     Add-content -Path  $path_to_dir'path_pst.txt' $path_to_dir$archive_name
-                    Copy-item 'C:\archive_to_remote_usr\add_pst.vbs' $path_to_dir'add_pst.vbs' -force
+                    Copy-item $path_to_exe $path_to_dir'add_pst.exe' -force
+
                     Write-Host $user_name
                     break
                 }else{
                       Copy-item $OpenFileDialog.filename $path_to_dir$archive_name -force
                       New-Item -Path $path_to_dir'path_pst.txt' -ItemType File
                       Add-content -Path  $path_to_dir'path_pst.txt' $path_to_dir$archive_name
-                      if(!(Test-Path -Path $path_to_dir'add_pst.vbs')){
-                          Copy-item 'C:\archive_to_remote_usr\add_pst.vbs' $path_to_dir'add_pst.vbs' -force
+                      if(!(Test-Path -Path $path_to_dir'add_pst.exe')){
+                          Copy-item $path_to_exe $path_to_dir'add_pst.exe' -force
+
                       }
                       Write-Host $user_name
+                      break
                 }
                }
         }else{

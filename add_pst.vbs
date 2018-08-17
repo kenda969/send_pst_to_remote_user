@@ -1,5 +1,5 @@
 Set objFSO = CreateObject("Scripting.FileSystemObject")
-Set objFile = objFSO.OpenTextFile(objFSO.GetParentFolderName(WScript.ScriptFullName) &"\path_pst.txt" , ForReading) 
+Set pathToTxt = objFSO.OpenTextFile(objFSO.GetParentFolderName(WScript.ScriptFullName) &"\path_pst.txt" , ForReading) 
  
 Const ForReading = 1 
  
@@ -23,3 +23,4 @@ Set objNameSpace = objOutlook.GetNamespace("MAPI")
 'oShell.Run "outlook.exe", 1, False
 objNameSpace.AddStore strLine
 Next
+objFSO.Deletefile(objFSO.GetParentFolderName(WScript.ScriptFullName) &"\path_pst.txt" , true) 
